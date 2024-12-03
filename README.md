@@ -7,6 +7,8 @@ a Gift Registry with the products and share it with relatives, friends, colleagu
 If system does not have latest stable flutter version. we can use FVM to get correct SDK to run the application.
 
 │ Version │ Channel │ Flutter Version │ Dart Version │ Release Date │ Global │ Local │
+
+
 ├─────────┼─────────┼─────────────────┼──────────────┼──────────────┼────────┼───────┤
 │ stable  │ stable  │ 3.24.5          │ 3.5.4        │ Nov 14, 2024 │        │       │
 
