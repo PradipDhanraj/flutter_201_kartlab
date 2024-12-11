@@ -1,6 +1,20 @@
 part of 'home_bloc.dart';
 
-@immutable
-sealed class HomeState {}
+class HomeState {
+  final int index;
+  final List<dynamic> registryList;
+  HomeState({
+    required this.index,
+    this.registryList = const [],
+  });
 
-final class HomeInitial extends HomeState {}
+  HomeState copyWith({
+    int? index,
+    List<dynamic>? registryList,
+  }) {
+    return HomeState(
+      index: index ?? this.index,
+      registryList: registryList ?? this.registryList,
+    );
+  }
+}

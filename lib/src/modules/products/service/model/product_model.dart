@@ -24,3 +24,11 @@ class ProductModel {
     this.isInCart = false,
   ]);
 }
+
+class RegistryItem {
+  final int id;
+  final String evetName;
+  final String desc;
+  DateTime eventDate;
+  RegistryItem(this.id, this.evetName, this.eventDate, this.desc);
+}

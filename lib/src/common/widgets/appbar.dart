@@ -7,17 +7,20 @@ AppBar commonAppbar(
 ]) {
   return AppBar(
     title: Text(title),
-    leading: InkWell(
-      onTap: menuClickFunc,
-      child: const Icon(
-        Icons.arrow_back_ios,
-      ),
-    ),
+    // leading: InkWell(
+    //   onTap: menuClickFunc,
+    //   child: const Icon(
+    //     Icons.message,
+    //   ),
+    // ),
     actions: [
       InkWell(
         onTap: cartClickFunc,
-        child: const Icon(
-          Icons.menu,
+        child: const Padding(
+          padding: EdgeInsets.all(15.0),
+          child: Icon(
+            Icons.shopping_cart,
+          ),
         ),
       ),
     ],

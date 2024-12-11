@@ -8,8 +8,6 @@ If system does not have latest stable flutter version. we can use FVM to get cor
 
 │ Version │ Channel │ Flutter Version │ Dart Version │ Release Date │ Global │ Local │
 
-
-├─────────┼─────────┼─────────────────┼──────────────┼──────────────┼────────┼───────┤
 │ stable  │ stable  │ 3.24.5          │ 3.5.4        │ Nov 14, 2024 │        │       │
 
 
