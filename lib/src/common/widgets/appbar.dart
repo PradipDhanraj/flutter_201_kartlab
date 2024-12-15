@@ -13,16 +13,16 @@ AppBar commonAppbar(
     //     Icons.message,
     //   ),
     // ),
-    actions: [
-      InkWell(
-        onTap: cartClickFunc,
-        child: const Padding(
-          padding: EdgeInsets.all(15.0),
-          child: Icon(
-            Icons.shopping_cart,
-          ),
-        ),
-      ),
-    ],
+    // actions: [
+    //   InkWell(
+    //     onTap: cartClickFunc,
+    //     child: const Padding(
+    //       padding: EdgeInsets.all(15.0),
+    //       child: Icon(
+    //         Icons.shopping_cart,
+    //       ),
+    //     ),
+    //   ),
+    // ],
   );
 }

@@ -7,6 +7,6 @@ class UpdateIndex extends HomeEvent {
   UpdateIndex(this.index);
 }
 class AddRegistryEvent extends HomeEvent {
-  final dynamic data;
+  final EventModel data;
   AddRegistryEvent(this.data);
 }

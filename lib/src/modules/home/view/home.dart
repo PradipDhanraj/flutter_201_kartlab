@@ -10,7 +10,9 @@ import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/common/widgets/appbar.dart';
 import 'package:flutter_201_kartlab/src/modules/common/bloc/common_bloc.dart';
 import 'package:flutter_201_kartlab/src/modules/home/bloc/home_bloc.dart';
-import 'package:flutter_201_kartlab/src/modules/home/view/registry_details.dart';
+import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_model.dart';
+import 'package:flutter_201_kartlab/src/modules/home/view/create_registry.dart';
+import 'package:flutter_201_kartlab/src/modules/gifts/view/add_gifts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Home extends StatelessWidget {
@@ -24,7 +26,9 @@ class Home extends StatelessWidget {
       floatingActionButton: InkWell(
         splashColor: Colors.black,
         onTap: () {
-          context.read<HomeBloc>().add(AddRegistryEvent("Hello"));
+          AppNavigation.navigateTo(CreateRegistry.routeName).then((value) {
+            context.read<HomeBloc>().add(AddRegistryEvent(value));
+          });
         },
         child: const Icon(
           Icons.add_circle_sharp,
@@ -38,10 +42,18 @@ class Home extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: state.registryList
-                    .map((e) => InkWell(
-                          child: const RegistryWidget(),
-                          onTap: () => context.read<CommonBloc>().add(NavigationEvent(RegistryDetails.routeName, args: e)),
-                        ))
+                    .map(
+                      (e) => InkWell(
+                          child: RegistryWidget(e),
+                          onTap: () {
+                            context.read<CommonBloc>().add(
+                                  NavigationEvent(
+                                    AddGiftsPage.routeName,
+                                    args: e,
+                                  ),
+                                );
+                          }),
+                    )
                     .toList(),
               ),
             ),
@@ -94,7 +106,9 @@ class Home extends StatelessWidget {
 }
 
 class RegistryWidget extends StatelessWidget {
-  const RegistryWidget({
+  final EventModel data;
+  const RegistryWidget(
+    this.data, {
     super.key,
   });
 
@@ -109,9 +123,9 @@ class RegistryWidget extends StatelessWidget {
             flex: 3,
             child: Container(
               decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  "Pradip's Birthday",
+                  data.title,
                   style: TextStyle(fontSize: 30),
                 ),
               ),
@@ -121,7 +135,7 @@ class RegistryWidget extends StatelessWidget {
             flex: 2,
             child: Container(
               color: Colors.red,
-              child: const Row(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -130,7 +144,7 @@ class RegistryWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "20",
+                        data.eventDate.difference(DateTime.now()).inDays.toString(),
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(

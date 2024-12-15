@@ -18,6 +18,7 @@ class KartLabsApp extends StatelessWidget {
       create: (context) => CommonBloc(),
       child: MaterialApp(
         restorationScopeId: 'app',
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

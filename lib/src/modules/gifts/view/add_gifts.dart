@@ -1,13 +1,20 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-class RegistryDetails extends StatelessWidget {
+class AddGiftsPage extends StatelessWidget {
   static const String routeName = "registry_details";
-  const RegistryDetails({super.key});
+  const AddGiftsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)?.settings.arguments;
     if (args != null) {}
-    return const Placeholder();
+    return Scaffold(
+      body: Column(
+        children: [
+          Text("data"),
+        ],
+      ),
+    );
   }
 }

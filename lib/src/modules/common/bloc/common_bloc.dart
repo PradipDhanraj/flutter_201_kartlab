@@ -5,6 +5,7 @@ part 'common_event.dart';
 part 'common_state.dart';
 
 class CommonBloc extends Bloc<CommonEvent, CommonState> {
+  List giftsList = <dynamic>[];
   CommonBloc() : super(CommonInitial()) {
     on<NavigationEvent>(_navigationFunc);
   }

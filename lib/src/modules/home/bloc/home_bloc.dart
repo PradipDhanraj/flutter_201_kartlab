@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_model.dart';
 part 'home_event.dart';
 part 'home_state.dart';
 

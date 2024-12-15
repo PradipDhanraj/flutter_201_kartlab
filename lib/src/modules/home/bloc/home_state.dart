@@ -2,7 +2,7 @@ part of 'home_bloc.dart';
 
 class HomeState {
   final int index;
-  final List<dynamic> registryList;
+  final List<EventModel> registryList;
   HomeState({
     required this.index,
     this.registryList = const [],
@@ -10,7 +10,7 @@ class HomeState {
 
   HomeState copyWith({
     int? index,
-    List<dynamic>? registryList,
+    List<EventModel>? registryList,
   }) {
     return HomeState(
       index: index ?? this.index,
