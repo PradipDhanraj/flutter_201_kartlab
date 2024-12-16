@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_201_kartlab/src/modules/products/service/model/product_model.dart';
+import 'package:flutter_201_kartlab/src/modules/home/service/models/product_model.dart';
 
 abstract class ProductService {
   Future<List<Products>> getProductList();

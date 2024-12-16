@@ -15,14 +15,18 @@ class CreateRegistry extends StatefulWidget {
 class _CreateRegistryState extends State<CreateRegistry> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _date;
-  TextEditingController _titleEditingController = TextEditingController();
-  TextEditingController _descEditingController = TextEditingController();
+  final TextEditingController _titleEditingController = TextEditingController();
+  final TextEditingController _descEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: InkWell(
+            onTap: () {
+              AppNavigation.goBack();
+            },
+            child: const Icon(Icons.arrow_back_ios)),
         title: const Text(
           "Create Registry",
           style: TextStyle(
@@ -46,7 +50,7 @@ class _CreateRegistryState extends State<CreateRegistry> {
                   focusColor: Colors.white,
                   hintText: "Add title here...",
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 ),
                 validator: (value) {

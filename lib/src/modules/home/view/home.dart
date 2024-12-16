@@ -22,11 +22,22 @@ class Home extends StatelessWidget {
               fontSize: null,
             ),
           ),
+          leading: InkWell(
+            onTap: () {
+              // context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName, args: [
+              //       null,
+              //       null,
+              //     ]));
+            },
+            child: const Icon(Icons.bookmark),
+          ),
           actions: [
             InkWell(
               onTap: () {
                 AppNavigation.navigateTo(CreateRegistry.routeName).then((value) {
-                  context.read<HomeBloc>().add(AddRegistryEvent(value));
+                  if (value != null) {
+                    context.read<HomeBloc>().add(AddRegistryEvent(value));
+                  }
                 });
               },
               child: const Chip(
@@ -73,7 +84,7 @@ class Home extends StatelessWidget {
                   AppNavigation.popUntil(Home.routeName);
                   break;
                 case 1:
-                  // context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName));
+                  context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName));
                   break;
                 default:
               }

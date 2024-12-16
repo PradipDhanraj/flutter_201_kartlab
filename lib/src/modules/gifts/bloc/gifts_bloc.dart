@@ -5,8 +5,8 @@ import 'package:flutter_201_kartlab/src/common/services/sharedPreferences/share_
 import 'package:flutter_201_kartlab/src/common/utils/locator.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_model.dart';
-import 'package:flutter_201_kartlab/src/modules/products/service/model/product_model.dart';
-import 'package:flutter_201_kartlab/src/modules/products/service/product_service.dart';
+import 'package:flutter_201_kartlab/src/modules/home/service/models/product_model.dart';
+import 'package:flutter_201_kartlab/src/common/services/product_service/product_service.dart';
 part 'gifts_event.dart';
 part 'gifts_state.dart';
 

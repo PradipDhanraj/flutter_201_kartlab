@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/modules/gifts/bloc/gifts_bloc.dart';
-import 'package:flutter_201_kartlab/src/modules/products/service/model/product_model.dart';
+import 'package:flutter_201_kartlab/src/modules/home/service/models/product_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddGiftsPage extends StatelessWidget {
@@ -20,10 +20,14 @@ class AddGiftsPage extends StatelessWidget {
         ),
         leading: InkWell(
           onTap: () {
-            ((ModalRoute.of(context)!.settings.arguments as List).first as Function).call();
-            AppNavigation.goBack();
+            try {
+              ((ModalRoute.of(context)!.settings.arguments as List).first as Function).call();
+            } catch (_) {
+            } finally {
+              AppNavigation.goBack();
+            }
           },
-          child: Icon(Icons.arrow_back_ios_new),
+          child: const Icon(Icons.arrow_back_ios_new),
         ),
       ),
       body: BlocConsumer<GiftsBloc, GiftsState>(
@@ -95,7 +99,27 @@ class AddGiftsPage extends StatelessWidget {
           children: [
             Flexible(
               flex: 1,
-              child: Text(e.productName),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    e.productName,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    e.productPrice,
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                  Text(
+                    e.productDescription,
+                    softWrap: true,
+                    maxLines: 4,
+                    style: const TextStyle(fontSize: 12),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
             Flexible(
               flex: 1,

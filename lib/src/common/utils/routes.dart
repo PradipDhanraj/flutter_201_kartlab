@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_201_kartlab/src/modules/common/bloc/common_bloc.dart';
 import 'package:flutter_201_kartlab/src/modules/gifts/bloc/gifts_bloc.dart';
 import 'package:flutter_201_kartlab/src/modules/home/bloc/home_bloc.dart';
 import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_model.dart';
@@ -9,14 +10,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case '/':
-      return MaterialPageRoute(settings: settings, builder: (context) => Home());
     case Home.routeName:
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => BlocProvider(
           create: (context) => HomeBloc()..add(InitDataEvent()),
-          child: Home(),
+          child: const Home(),
         ),
       );
     case AddGiftsPage.routeName:
@@ -24,9 +23,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         settings: settings,
         builder: (context) => BlocProvider(
           create: (context) => GiftsBloc((settings.arguments as List).first as Function)
-            ..add(
-              FetchCategories((settings.arguments as List).last as EventModel),
-            ),
+            ..add(FetchCategories((settings.arguments as List).last as EventModel)),
           child: const AddGiftsPage(),
         ),
       );
@@ -36,6 +33,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => CreateRegistry(),
       );
     default:
-      return MaterialPageRoute(settings: settings, builder: (context) => Home());
+      return MaterialPageRoute(settings: settings, builder: (context) => const Placeholder());
   }
 }
