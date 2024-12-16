@@ -35,18 +35,6 @@ class Home extends StatelessWidget {
               ),
             ),
           ]),
-      // floatingActionButton: InkWell(
-      //   splashColor: Colors.black,
-      //   onTap: () {
-      //     AppNavigation.navigateTo(CreateRegistry.routeName).then((value) {
-      //       context.read<HomeBloc>().add(AddRegistryEvent(value));
-      //     });
-      //   },
-      //   child: const Icon(
-      //     Icons.add_circle_sharp,
-      //     size: 40,
-      //   ),
-      // ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return Padding(

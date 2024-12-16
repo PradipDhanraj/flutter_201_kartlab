@@ -34,11 +34,6 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
     if (event.categoryId != "0") {
       products.removeWhere((element) => element.productCategoryId != event.categoryId);
     }
-    if (event.event.gifts.isNotEmpty) {
-      products.removeWhere((element) => event.event.gifts.any(
-            (e) => element.productName == e.productName,
-          ));
-    }
     emit(state.copyWith(
       products: products,
       categoryId: event.categoryId,
@@ -52,9 +47,11 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
     var eventModel = list.firstWhere((element) => element.id == event.event.id);
     list.removeWhere((element) => element.id == event.event.id);
     await sharedService.prefs.clear();
-    if (!eventModel.gifts.any((element) => element.productName == event.gift.productName)) {
-      eventModel.gifts.add(event.gift);
-    }eventModel.yourGift = event.gift;
+    if (eventModel.yourGift != null) {
+      eventModel.gifts.removeWhere((element) => element.productName == eventModel.yourGift!.productName);
+    }
+    eventModel.gifts.add(event.gift);
+    eventModel.yourGift = event.gift;
     list.add(eventModel);
     sharedService.setData('registry', list.map((e) => e.eventModelToJsonString()).toList());
     ScaffoldMessenger.of(AppNavigation.navigatorKey.currentContext!).showSnackBar(

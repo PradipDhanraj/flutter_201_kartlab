@@ -59,14 +59,14 @@ class AddGiftsPage extends StatelessWidget {
                     }).toList(),
                   ),
                 ),
-                ...state.products.where((e) => !(state.event!.gifts).any((ee) => ee.productName == e.productName)).map(
-                      (e) => InkWell(
-                        child: _productCard(e),
-                        onTap: () {
-                          context.read<GiftsBloc>().add(AddGiftToRegistry(e, state.event!));
-                        },
-                      ),
-                    ),
+                ...state.products.map(
+                  (e) => InkWell(
+                    child: _productCard(e, e.productName == state.event?.yourGift?.productName),
+                    onTap: () {
+                      context.read<GiftsBloc>().add(AddGiftToRegistry(e, state.event!));
+                    },
+                  ),
+                ),
               ],
             ),
           );
@@ -75,18 +75,19 @@ class AddGiftsPage extends StatelessWidget {
     );
   }
 
-  Widget _productCard(Products e) {
+  Widget _productCard(Products e, bool isSelected) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
         width: double.infinity,
         height: 200,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           // border: Border.all(
           //   color: Colors.red,
           //   width: 2.0,
           // ),
+          color: isSelected ? Colors.green : null,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
