@@ -15,7 +15,25 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: commonAppbar('KartLabs'),
+      appBar: AppBar(
+          title: const Text(
+            "KartLabs",
+            style: TextStyle(
+              fontSize: null,
+            ),
+          ),
+          actions: [
+            InkWell(
+              onTap: () {
+                ((ModalRoute.of(context)!.settings.arguments as List).first as Function).call();
+                AppNavigation.goBack();
+              },
+              child: const Chip(
+                label: Text('New Event'),
+                avatar: Icon(Icons.add),
+              ),
+            ),
+          ]),
       floatingActionButton: InkWell(
         splashColor: Colors.black,
         onTap: () {
@@ -34,25 +52,7 @@ class Home extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
               child: Column(
-                children: state.registryList
-                    .map(
-                      (e) => InkWell(
-                          child: RegistryWidget(e),
-                          onTap: () {
-                            context.read<CommonBloc>().add(
-                                  NavigationEvent(
-                                    AddGiftsPage.routeName,
-                                    args: [
-                                      () {
-                                        context.read<HomeBloc>().add(InitDataEvent());
-                                      },
-                                      e,
-                                    ],
-                                  ),
-                                );
-                          }),
-                    )
-                    .toList(),
+                children: state.registryList.map((e) => RegistryWidget(e)).toList(),
               ),
             ),
           );
@@ -131,10 +131,59 @@ class RegistryWidget extends StatelessWidget {
             flex: 3,
             child: Container(
               decoration: const BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Center(
-                child: Text(
-                  data.title,
-                  style: const TextStyle(fontSize: 30),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          data.title,
+                          style: const TextStyle(fontSize: 30),
+                        ),
+                        if (data.desc.isNotEmpty)
+                          Text(
+                            data.desc,
+                            style: const TextStyle(fontSize: 30),
+                          ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            context.read<CommonBloc>().add(
+                                  NavigationEvent(
+                                    AddGiftsPage.routeName,
+                                    args: [
+                                      () {
+                                        context.read<HomeBloc>().add(InitDataEvent());
+                                      },
+                                      data,
+                                    ],
+                                  ),
+                                );
+                          },
+                          child: const Chip(
+                            label: Text('Choose gift'),
+                            avatar: Icon(Icons.card_giftcard),
+                          ),
+                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     context.read<HomeBloc>().add(DeleteRegistry(data));
+                        //   },
+                        //   child: Icon(Icons.delete),
+                        // ),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
@@ -142,7 +191,7 @@ class RegistryWidget extends StatelessWidget {
           Flexible(
             flex: 2,
             child: Container(
-              color: Colors.red,
+              color: Colors.grey,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
@@ -160,30 +209,29 @@ class RegistryWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Column(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "0",
-                        style: TextStyle(fontSize: 20),
+                        "${data.gifts.length}",
+                        style: const TextStyle(fontSize: 20),
                       ),
-                      Text(
-                        "Fulfilled",
-                      ),
-                    ],
-                  ),
-                  const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "20",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Text(
+                      const Text(
                         "Total gifts",
                       ),
                     ],
-                  )
+                  ),
+                  InkWell(
+                      onTap: () {
+                        context.read<HomeBloc>().add(DeleteRegistry(data));
+                      },
+                      child: const Chip(
+                        label: Text("Delete"),
+                        avatar: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                      )),
                 ],
               ),
             ),
