@@ -14,6 +14,7 @@ class EventModel {
   DateTime eventDate;
   String desc;
   List<Products> gifts;
+  Products? yourGift;
 
   EventModel({
     required this.id,
@@ -21,6 +22,7 @@ class EventModel {
     required this.eventDate,
     required this.desc,
     this.gifts = const [],
+    this.yourGift,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
@@ -29,6 +31,7 @@ class EventModel {
         eventDate: DateTime.parse(json["eventDate"]),
         desc: json["desc"],
         gifts: List<Products>.from(json["gifts"].map((x) => Products.fromJson(x))),
+        yourGift: json["yourGift"] != null ? Products.fromJson(json["yourGift"]) : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -36,7 +39,10 @@ class EventModel {
         "title": title,
         "eventDate": eventDate.toString(),
         "desc": desc,
-        "gifts": List<dynamic>.from(gifts.map((x) => x.toJson())),
+        "gifts": List<dynamic>.from(
+          gifts.map((x) => x.toJson()),
+        ),
+        "yourGift": yourGift?.toJson(),
       };
 
   String eventModelToJsonString() => json.encode(toJson());

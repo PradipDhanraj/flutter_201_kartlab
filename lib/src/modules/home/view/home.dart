@@ -25,8 +25,9 @@ class Home extends StatelessWidget {
           actions: [
             InkWell(
               onTap: () {
-                ((ModalRoute.of(context)!.settings.arguments as List).first as Function).call();
-                AppNavigation.goBack();
+                AppNavigation.navigateTo(CreateRegistry.routeName).then((value) {
+                  context.read<HomeBloc>().add(AddRegistryEvent(value));
+                });
               },
               child: const Chip(
                 label: Text('New Event'),
@@ -34,18 +35,18 @@ class Home extends StatelessWidget {
               ),
             ),
           ]),
-      floatingActionButton: InkWell(
-        splashColor: Colors.black,
-        onTap: () {
-          AppNavigation.navigateTo(CreateRegistry.routeName).then((value) {
-            context.read<HomeBloc>().add(AddRegistryEvent(value));
-          });
-        },
-        child: const Icon(
-          Icons.add_circle_sharp,
-          size: 40,
-        ),
-      ),
+      // floatingActionButton: InkWell(
+      //   splashColor: Colors.black,
+      //   onTap: () {
+      //     AppNavigation.navigateTo(CreateRegistry.routeName).then((value) {
+      //       context.read<HomeBloc>().add(AddRegistryEvent(value));
+      //     });
+      //   },
+      //   child: const Icon(
+      //     Icons.add_circle_sharp,
+      //     size: 40,
+      //   ),
+      // ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return Padding(
@@ -84,9 +85,7 @@ class Home extends StatelessWidget {
                   AppNavigation.popUntil(Home.routeName);
                   break;
                 case 1:
-                  context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName));
-                  break;
-                case 2:
+                  // context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName));
                   break;
                 default:
               }
@@ -98,12 +97,8 @@ class Home extends StatelessWidget {
                 label: 'Registry',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                label: 'Add Item',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.share),
-                label: 'Share List',
+                icon: Icon(Icons.list),
+                label: 'Registry List',
               ),
             ],
           );
@@ -130,7 +125,13 @@ class RegistryWidget extends StatelessWidget {
           Flexible(
             flex: 3,
             child: Container(
-              decoration: const BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.all(Radius.circular(10))),
+              decoration: BoxDecoration(
+                color: data.yourGift == null ? Colors.white10 : Colors.green.shade700,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
@@ -148,7 +149,7 @@ class RegistryWidget extends StatelessWidget {
                         if (data.desc.isNotEmpty)
                           Text(
                             data.desc,
-                            style: const TextStyle(fontSize: 30),
+                            style: const TextStyle(fontSize: 15),
                           ),
                       ],
                     ),
@@ -170,9 +171,9 @@ class RegistryWidget extends StatelessWidget {
                                   ),
                                 );
                           },
-                          child: const Chip(
-                            label: Text('Choose gift'),
-                            avatar: Icon(Icons.card_giftcard),
+                          child: Chip(
+                            label: Text(data.yourGift == null ? 'Choose gift' : "View your gift"),
+                            avatar: const Icon(Icons.card_giftcard),
                           ),
                         ),
                         // InkWell(
@@ -191,7 +192,13 @@ class RegistryWidget extends StatelessWidget {
           Flexible(
             flex: 2,
             child: Container(
-              color: Colors.grey,
+              decoration: BoxDecoration(
+                color: data.yourGift == null ? Colors.grey : Colors.green.shade900,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,

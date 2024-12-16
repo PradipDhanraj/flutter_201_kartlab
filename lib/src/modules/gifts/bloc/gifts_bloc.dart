@@ -54,7 +54,7 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
     await sharedService.prefs.clear();
     if (!eventModel.gifts.any((element) => element.productName == event.gift.productName)) {
       eventModel.gifts.add(event.gift);
-    }
+    }eventModel.yourGift = event.gift;
     list.add(eventModel);
     sharedService.setData('registry', list.map((e) => e.eventModelToJsonString()).toList());
     ScaffoldMessenger.of(AppNavigation.navigatorKey.currentContext!).showSnackBar(
@@ -63,5 +63,7 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
     emit(state.copyWith(
       event: eventModel,
     ));
+    refreshHomeRegistryList?.call();
+    AppNavigation.goBack();
   }
 }
