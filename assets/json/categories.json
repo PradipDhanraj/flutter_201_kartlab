@@ -1,0 +1,22 @@
+[
+    {
+        "category_id": "0",
+        "category_title": "All"
+    },
+    {
+        "category_id": "1",
+        "category_title": "Electronics"
+    },
+    {
+        "category_id": "2",
+        "category_title": "Mens"
+    },
+    {
+        "category_id": "3",
+        "category_title": "Womens"
+    },
+    {
+        "category_id": "4",
+        "category_title": "Baby and Kids"
+    }
+]

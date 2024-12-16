@@ -1,11 +1,4 @@
-// ignore_for_file: must_be_immutable
-
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/common/widgets/appbar.dart';
 import 'package:flutter_201_kartlab/src/modules/common/bloc/common_bloc.dart';
@@ -17,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Home extends StatelessWidget {
   static const String routeName = 'home';
-  Home({super.key});
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +42,12 @@ class Home extends StatelessWidget {
                             context.read<CommonBloc>().add(
                                   NavigationEvent(
                                     AddGiftsPage.routeName,
-                                    args: e,
+                                    args: [
+                                      () {
+                                        context.read<HomeBloc>().add(InitDataEvent());
+                                      },
+                                      e,
+                                    ],
                                   ),
                                 );
                           }),
@@ -81,7 +79,17 @@ class Home extends StatelessWidget {
             elevation: 10,
             type: BottomNavigationBarType.shifting,
             onTap: (value) {
-              context.read<HomeBloc>().add(UpdateIndex(value));
+              switch (value) {
+                case 0:
+                  AppNavigation.popUntil(Home.routeName);
+                  break;
+                case 1:
+                  context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName));
+                  break;
+                case 2:
+                  break;
+                default:
+              }
             },
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
@@ -122,11 +130,11 @@ class RegistryWidget extends StatelessWidget {
           Flexible(
             flex: 3,
             child: Container(
-              decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.all(Radius.circular(10))),
+              decoration: const BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Center(
                 child: Text(
                   data.title,
-                  style: TextStyle(fontSize: 30),
+                  style: const TextStyle(fontSize: 30),
                 ),
               ),
             ),
@@ -145,14 +153,14 @@ class RegistryWidget extends StatelessWidget {
                     children: [
                       Text(
                         data.eventDate.difference(DateTime.now()).inDays.toString(),
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
-                      Text(
+                      const Text(
                         "Days left",
                       ),
                     ],
                   ),
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -164,7 +172,7 @@ class RegistryWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(

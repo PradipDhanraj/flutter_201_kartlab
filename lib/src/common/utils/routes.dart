@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_201_kartlab/src/modules/gifts/bloc/gifts_bloc.dart';
 import 'package:flutter_201_kartlab/src/modules/home/bloc/home_bloc.dart';
+import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_model.dart';
 import 'package:flutter_201_kartlab/src/modules/home/view/create_registry.dart';
 import 'package:flutter_201_kartlab/src/modules/home/view/home.dart';
 import 'package:flutter_201_kartlab/src/modules/gifts/view/add_gifts.dart';
@@ -13,14 +15,20 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => BlocProvider(
-          create: (context) => HomeBloc(),
+          create: (context) => HomeBloc()..add(InitDataEvent()),
           child: Home(),
         ),
       );
     case AddGiftsPage.routeName:
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) => const AddGiftsPage(),
+        builder: (context) => BlocProvider(
+          create: (context) => GiftsBloc((settings.arguments as List).first as Function)
+            ..add(
+              FetchCategories((settings.arguments as List).last as EventModel),
+            ),
+          child: const AddGiftsPage(),
+        ),
       );
     case CreateRegistry.routeName:
       return MaterialPageRoute(
