@@ -34,6 +34,10 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
     if (event.categoryId != "0") {
       products.removeWhere((element) => element.productCategoryId != event.categoryId);
     }
+    if (state.event == null) {
+      var wishList = await sharedService.getData('wishlist');
+      products.removeWhere((element) => !wishList.contains(element.productName));
+    }
     emit(state.copyWith(
       products: products,
       categoryId: event.categoryId,

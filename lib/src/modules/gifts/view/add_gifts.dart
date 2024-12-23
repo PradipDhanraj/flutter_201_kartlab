@@ -48,7 +48,7 @@ class AddGiftsPage extends StatelessWidget {
                           context.read<GiftsBloc>().add(
                                 FetchCategoryProducts(
                                   e.categoryId,
-                                  state.event!,
+                                  state.event,
                                 ),
                               );
                         },
