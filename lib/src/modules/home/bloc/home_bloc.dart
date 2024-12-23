@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/services/product_service/product_service.dart';
 import 'package:flutter_201_kartlab/src/common/services/sharedPreferences/share_preferences_service.dart';
+import 'package:flutter_201_kartlab/src/common/utils/constants.dart';
 import 'package:flutter_201_kartlab/src/common/utils/locator.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/modules/home/service/models/product_model.dart';
@@ -26,7 +27,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> _addRegistryData(AddRegistryEvent event, Emitter<HomeState> emit) {
     var list = [...state.registryList, event.data];
     locator.get<SharePreferenceService>().setData(
-        "registry",
+        Constants.registry,
         list
             .map(
               (e) => e.eventModelToJsonString(),
@@ -36,7 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr<void> _initDataFunction(InitDataEvent event, Emitter<HomeState> emit) async {
-    var dataList = await locator.get<SharePreferenceService>().getData('registry');
+    var dataList = await locator.get<SharePreferenceService>().getData(Constants.registry);
     var list = dataList.map((e) => eventModelFromJson(e)).toList();
     var categories = await locator.get<ProductService>().getCategories();
     emit(state.copyWith(registryList: list, categories: categories));
@@ -46,11 +47,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr<void> _deleteRegistry(DeleteRegistry event, Emitter<HomeState> emit) async {
-    var list = (await sharedService.getData('registry')).map((e) => eventModelFromJson(e)).toList();
+    var list = (await sharedService.getData(Constants.registry)).map((e) => eventModelFromJson(e)).toList();
     //var eventModel = list.firstWhere((element) => element.id == event.eventModel.id);
     list.removeWhere((element) => element.id == event.eventModel.id);
-    await sharedService.prefs.remove("registry");
-    sharedService.setData('registry', list.map((e) => e.eventModelToJsonString()).toList());
+    await sharedService.prefs.remove(Constants.registry);
+    sharedService.setData(Constants.registry, list.map((e) => e.eventModelToJsonString()).toList());
     ScaffoldMessenger.of(AppNavigation.navigatorKey.currentContext!).showSnackBar(
       const SnackBar(content: Text('Deleted registry')),
     );
@@ -73,7 +74,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(products: products, categoryId: event.categoryId));
   }
 
-  Future<List<String>> get getWishList async => await sharedService.getData("wishlist");
+  Future<List<String>> get getWishList async => await sharedService.getData(Constants.wishlist);
 
   FutureOr<void> _updateWishlist(UpdateWishList event, Emitter<HomeState> emit) async {
     var wishList = await getWishList;
@@ -87,7 +88,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       }
     }
-    await sharedService.setData("wishlist", wishList);
+    await sharedService.setData(Constants.wishlist, wishList);
     emit(state.copyWith(products: state.products));
   }
 }

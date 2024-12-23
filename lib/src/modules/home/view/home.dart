@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_201_kartlab/src/common/utils/constants.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/common/widgets/product_card.dart';
 import 'package:flutter_201_kartlab/src/modules/common/bloc/common_bloc.dart';
@@ -142,7 +143,7 @@ class Home extends StatelessWidget {
               BottomNavigationBarItem(
                 backgroundColor: Colors.black87,
                 icon: Icon(Icons.list),
-                label: 'Registry',
+                label: Constants.registry,
               ),
             ],
           );

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/services/sharedPreferences/share_preferences_service.dart';
+import 'package:flutter_201_kartlab/src/common/utils/constants.dart';
 import 'package:flutter_201_kartlab/src/common/utils/locator.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_model.dart';
@@ -35,7 +36,7 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
       products.removeWhere((element) => element.productCategoryId != event.categoryId);
     }
     if (state.event == null) {
-      var wishList = await sharedService.getData('wishlist');
+      var wishList = await sharedService.getData(Constants.wishlist);
       products.removeWhere((element) => !wishList.contains(element.productName));
     }
     emit(state.copyWith(
@@ -47,17 +48,17 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
   }
 
   FutureOr<void> _addGiftToRegistry(AddGiftToRegistry event, Emitter<GiftsState> emit) async {
-    var list = (await sharedService.getData('registry')).map((e) => eventModelFromJson(e)).toList();
+    var list = (await sharedService.getData(Constants.registry)).map((e) => eventModelFromJson(e)).toList();
     var eventModel = list.firstWhere((element) => element.id == event.event.id);
     list.removeWhere((element) => element.id == event.event.id);
-    await sharedService.prefs.remove("registry");
+    await sharedService.prefs.remove(Constants.registry);
     if (eventModel.yourGift != null) {
       eventModel.gifts.removeWhere((element) => element.productName == eventModel.yourGift!.productName);
     }
     eventModel.gifts.add(event.gift);
     eventModel.yourGift = event.gift;
     list.add(eventModel);
-    sharedService.setData('registry', list.map((e) => e.eventModelToJsonString()).toList());
+    sharedService.setData(Constants.registry, list.map((e) => e.eventModelToJsonString()).toList());
     ScaffoldMessenger.of(AppNavigation.navigatorKey.currentContext!).showSnackBar(
       const SnackBar(content: Text('Item Added to registry')),
     );
