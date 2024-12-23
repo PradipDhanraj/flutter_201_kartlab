@@ -12,12 +12,16 @@ class AddGiftsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Gift Categories",
-          style: TextStyle(
-            fontSize: null,
-          ),
-        ),
+        title: BlocConsumer<GiftsBloc, GiftsState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return Text(
+                state.event != null ? "Gift Categories" : "Wish List",
+                style: const TextStyle(
+                  fontSize: null,
+                ),
+              );
+            }),
         leading: InkWell(
           onTap: () {
             try {

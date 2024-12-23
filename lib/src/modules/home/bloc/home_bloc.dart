@@ -49,7 +49,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     var list = (await sharedService.getData('registry')).map((e) => eventModelFromJson(e)).toList();
     //var eventModel = list.firstWhere((element) => element.id == event.eventModel.id);
     list.removeWhere((element) => element.id == event.eventModel.id);
-    await sharedService.prefs.clear();
+    await sharedService.prefs.remove("registry");
     sharedService.setData('registry', list.map((e) => e.eventModelToJsonString()).toList());
     ScaffoldMessenger.of(AppNavigation.navigatorKey.currentContext!).showSnackBar(
       const SnackBar(content: Text('Deleted registry')),

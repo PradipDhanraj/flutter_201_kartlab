@@ -50,7 +50,7 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
     var list = (await sharedService.getData('registry')).map((e) => eventModelFromJson(e)).toList();
     var eventModel = list.firstWhere((element) => element.id == event.event.id);
     list.removeWhere((element) => element.id == event.event.id);
-    await sharedService.prefs.clear();
+    await sharedService.prefs.remove("registry");
     if (eventModel.yourGift != null) {
       eventModel.gifts.removeWhere((element) => element.productName == eventModel.yourGift!.productName);
     }
