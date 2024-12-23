@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/services/product_service/product_service.dart';
@@ -11,7 +12,9 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  late SharePreferenceService sharedService;
   HomeBloc() : super(HomeState(index: 0)) {
+    sharedService = locator.get<SharePreferenceService>();
     on<AddRegistryEvent>(_addRegistryData);
     on<InitDataEvent>(_initDataFunction);
     on<DeleteRegistry>(_deleteRegistry);
@@ -43,7 +46,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr<void> _deleteRegistry(DeleteRegistry event, Emitter<HomeState> emit) async {
-    var sharedService = locator.get<SharePreferenceService>();
     var list = (await sharedService.getData('registry')).map((e) => eventModelFromJson(e)).toList();
     //var eventModel = list.firstWhere((element) => element.id == event.eventModel.id);
     list.removeWhere((element) => element.id == event.eventModel.id);
@@ -64,17 +66,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event.categoryId != "0") {
       products.removeWhere((element) => element.productCategoryId != event.categoryId);
     }
+    var wishList = await getWishList;
+    for (var productItem in products) {
+      productItem.isInMyWishList = wishList.contains(productItem.productName);
+    }
     emit(state.copyWith(products: products, categoryId: event.categoryId));
   }
 
-  FutureOr<void> _updateWishlist(UpdateWishList event, Emitter<HomeState> emit) {
-    // var product = state.products.firstWhere((element) => element.productName == event.product.productName);
-    // product.isInMyWishList = !event.product.isInMyWishList;
+  Future<List<String>> get getWishList async => await sharedService.getData("wishlist");
+
+  FutureOr<void> _updateWishlist(UpdateWishList event, Emitter<HomeState> emit) async {
+    var wishList = await getWishList;
     for (var element in state.products) {
       if (element.productName == event.product.productName) {
         element.isInMyWishList = !event.product.isInMyWishList;
+        if (element.isInMyWishList) {
+          wishList.add(event.product.productName);
+        } else {
+          wishList.removeWhere((element) => element == event.product.productName);
+        }
       }
     }
+    await sharedService.setData("wishlist", wishList);
     emit(state.copyWith(products: state.products));
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/common/widgets/product_card.dart';
 import 'package:flutter_201_kartlab/src/modules/gifts/bloc/gifts_bloc.dart';
-import 'package:flutter_201_kartlab/src/modules/home/service/models/product_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddGiftsPage extends StatelessWidget {
