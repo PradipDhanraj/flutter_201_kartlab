@@ -39,6 +39,7 @@ class Products {
   String productThumnailUrl;
   String productCategoryId;
   List<String> productImages;
+  bool isInMyWishList;
 
   Products({
     required this.productName,
@@ -47,6 +48,7 @@ class Products {
     required this.productThumnailUrl,
     required this.productCategoryId,
     required this.productImages,
+    this.isInMyWishList = false,
   });
 
   factory Products.fromJson(Map<String, dynamic> json) => Products(
@@ -55,7 +57,10 @@ class Products {
         productDescription: json["product_description"],
         productThumnailUrl: json["product_thumnail_url"],
         productCategoryId: json["product_category_id"],
-        productImages: List<String>.from(json["product_images"].map((x) => x)),
+        productImages: List<String>.from(
+          json["product_images"].map((x) => x),
+        ),
+        isInMyWishList: (json["isInMyWishList"] ?? false) as bool,
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,6 +70,7 @@ class Products {
         "product_thumnail_url": productThumnailUrl,
         "product_category_id": productCategoryId,
         "product_images": List<dynamic>.from(productImages.map((x) => x)),
+        "isInMyWishList": isInMyWishList,
       };
 }
 

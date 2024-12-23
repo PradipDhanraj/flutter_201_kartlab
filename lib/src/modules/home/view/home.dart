@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
-import 'package:flutter_201_kartlab/src/common/widgets/appbar.dart';
+import 'package:flutter_201_kartlab/src/common/widgets/product_card.dart';
 import 'package:flutter_201_kartlab/src/modules/common/bloc/common_bloc.dart';
 import 'package:flutter_201_kartlab/src/modules/home/bloc/home_bloc.dart';
 import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_model.dart';
@@ -11,6 +11,57 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class Home extends StatelessWidget {
   static const String routeName = 'home';
   const Home({super.key});
+
+  Widget _pages(HomeState state, BuildContext context) {
+    switch (state.index) {
+      case 1:
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: state.registryList.map((e) => RegistryWidget(e)).toList(),
+            ),
+          ),
+        );
+      default:
+    }
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Wrap(
+              spacing: 10,
+              children: state.categories.map((e) {
+                return InkWell(
+                  onTap: () {
+                    context.read<HomeBloc>().add(UpdateProducts(e.categoryId));
+                  },
+                  child: Chip(
+                    backgroundColor: null,
+                    label: Text(
+                      e.categoryTitle,
+                      style: TextStyle(color: null),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          ...state.products.map(
+            (e) => ProductCardWidget(
+              e,
+              showWishIcon: true,
+              addToWishlistFunc: () {
+                context.read<HomeBloc>().add(UpdateWishList(e));
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +75,10 @@ class Home extends StatelessWidget {
           ),
           leading: InkWell(
             onTap: () {
-              // context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName, args: [
-              //       null,
-              //       null,
-              //     ]));
+              context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName, args: [
+                    null,
+                    null,
+                  ]));
             },
             child: const Icon(Icons.bookmark),
           ),
@@ -48,14 +99,7 @@ class Home extends StatelessWidget {
           ]),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: state.registryList.map((e) => RegistryWidget(e)).toList(),
-              ),
-            ),
-          );
+          return _pages(state, context);
         },
       ),
       bottomNavigationBar: BlocBuilder<HomeBloc, HomeState>(
@@ -78,26 +122,16 @@ class Home extends StatelessWidget {
             showUnselectedLabels: false,
             elevation: 10,
             type: BottomNavigationBarType.shifting,
-            onTap: (value) {
-              switch (value) {
-                case 0:
-                  AppNavigation.popUntil(Home.routeName);
-                  break;
-                case 1:
-                  context.read<CommonBloc>().add(NavigationEvent(AddGiftsPage.routeName));
-                  break;
-                default:
-              }
-            },
+            onTap: (value) => context.read<HomeBloc>().add(UpdateIndexEvent(value)),
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                backgroundColor: Colors.black87,
-                icon: Icon(Icons.app_registration_sharp),
-                label: 'Registry',
+                icon: Icon(Icons.home),
+                label: 'Home',
               ),
               BottomNavigationBarItem(
+                backgroundColor: Colors.black87,
                 icon: Icon(Icons.list),
-                label: 'Registry List',
+                label: 'Registry',
               ),
             ],
           );

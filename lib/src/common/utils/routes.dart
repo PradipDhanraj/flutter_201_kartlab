@@ -22,8 +22,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => BlocProvider(
-          create: (context) => GiftsBloc((settings.arguments as List).first as Function)
-            ..add(FetchCategories((settings.arguments as List).last as EventModel)),
+          create: (context) => GiftsBloc((settings.arguments as List).first as Function?)
+            ..add(FetchCategories((settings.arguments as List).last as EventModel?)),
           child: const AddGiftsPage(),
         ),
       );

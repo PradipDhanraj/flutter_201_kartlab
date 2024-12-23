@@ -3,7 +3,7 @@ part of 'gifts_bloc.dart';
 sealed class GiftsEvent {}
 
 class FetchCategories extends GiftsEvent {
-  final EventModel event;
+  final EventModel? event;
   FetchCategories(this.event);
 }
 
@@ -15,6 +15,6 @@ class AddGiftToRegistry extends GiftsEvent {
 
 class FetchCategoryProducts extends GiftsEvent {
   final String categoryId;
-  final EventModel event;
+  final EventModel? event;
   FetchCategoryProducts(this.categoryId, this.event);
 }
