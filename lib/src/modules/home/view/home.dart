@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/common/widgets/product_card.dart';
 import 'package:flutter_201_kartlab/src/modules/common/bloc/common_bloc.dart';
@@ -7,6 +10,7 @@ import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_mod
 import 'package:flutter_201_kartlab/src/modules/home/view/create_registry.dart';
 import 'package:flutter_201_kartlab/src/modules/gifts/view/add_gifts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Home extends StatelessWidget {
   static const String routeName = 'home';
@@ -17,11 +21,18 @@ class Home extends StatelessWidget {
       case 1:
         return Padding(
           padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: state.registryList.map((e) => RegistryWidget(e)).toList(),
-            ),
-          ),
+          child: state.registryList.isEmpty
+              ? const Center(
+                  child: Text(
+                    'Create new registry,\n Tap + New Event button on top right corner',
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    children: state.registryList.map((e) => RegistryWidget(e)).toList(),
+                  ),
+                ),
         );
       default:
     }
@@ -42,7 +53,7 @@ class Home extends StatelessWidget {
                     backgroundColor: null,
                     label: Text(
                       e.categoryTitle,
-                      style: TextStyle(color: null),
+                      style: const TextStyle(color: null),
                     ),
                   ),
                 );
@@ -172,19 +183,22 @@ class RegistryWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          data.title,
-                          style: const TextStyle(fontSize: 30),
-                        ),
-                        if (data.desc.isNotEmpty)
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
                           Text(
-                            data.desc,
-                            style: const TextStyle(fontSize: 15),
+                            data.title,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 20),
                           ),
-                      ],
+                          if (data.desc.isNotEmpty)
+                            Text(
+                              data.desc,
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                        ],
+                      ),
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.max,
@@ -261,6 +275,29 @@ class RegistryWidget extends StatelessWidget {
                       ),
                     ],
                   ),
+                  if (data.yourGift != null)
+                    InkWell(
+                      onTap: () async {
+                        final box = context.findRenderObject() as RenderBox?;
+                        await Share.share(
+                          jsonEncode(data.toJson()),
+                          subject: "Share gift registry details",
+                          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                        );
+                      },
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.share,
+                            size: 30,
+                          ),
+                          Text(
+                            "Share",
+                          ),
+                        ],
+                      ),
+                    ),
                   InkWell(
                       onTap: () {
                         context.read<HomeBloc>().add(DeleteRegistry(data));

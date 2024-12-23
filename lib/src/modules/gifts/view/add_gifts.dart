@@ -67,17 +67,27 @@ class AddGiftsPage extends StatelessWidget {
                     }).toList(),
                   ),
                 ),
-                ...state.products.map(
-                  (e) => InkWell(
-                    child: ProductCardWidget(
-                      e,
-                      isSelected: e.productName == state.event?.yourGift?.productName,
+                if (state.products.isEmpty)
+                  const SizedBox(
+                    height: 200,
+                    child: Center(
+                      child: Text("Add products in your wishlist from home page."),
                     ),
-                    onTap: () {
-                      context.read<GiftsBloc>().add(AddGiftToRegistry(e, state.event!));
-                    },
                   ),
-                ),
+                if (state.products.isNotEmpty)
+                  ...state.products.map(
+                    (e) => InkWell(
+                      onTap: state.event != null
+                          ? () {
+                              context.read<GiftsBloc>().add(AddGiftToRegistry(e, state.event!));
+                            }
+                          : null,
+                      child: ProductCardWidget(
+                        e,
+                        isSelected: e.productName == state.event?.yourGift?.productName,
+                      ),
+                    ),
+                  ),
               ],
             ),
           );
