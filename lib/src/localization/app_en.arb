@@ -2,5 +2,43 @@
   "appTitle": "flutter_201_kartlab",
   "@appTitle": {
     "description": "The title of the application"
-  }
+  },
+  "wished": "Wished",
+  "@wished": {
+    "description": "wished text"
+  },
+  "addToWishList" :"Add to Wishlist",
+  "@addToWishList": {
+    "description": "Add to Wishlist text"
+  },
+  "addProductToWishlist": "Add products in your wishlist from home page.",
+  "@addProductToWishlist": {
+    "description": "Add products in your wishlist from home page. text"
+  },
+  "submit":"Submit",
+  "@submit": {
+    "description": "Submit text"
+  },
+  "delete":"Delete",
+  "@delete": {
+    "description": "Delete text"
+  },
+  "giftCategories" : "Gift Categories",
+  "wishlistTitle":"Wish List",
+  "createRegistry":"Create Registry",
+  "addTitleHere": "Add title here...",
+  "pleaseAddText":"Please enter some text",
+  "addDesc":"Add description here...",
+  "enterDate": "Please enter Date",
+  "addedNewRegistry":"Added new registry entry",
+  "createNewRegistry":"Create new registry,\n Tap + New Event button on top right corner",
+  "kartlabs":"KartLabs",
+  "newEvent":"New Event",
+  "home":"Home",
+  "chooseGift": "Choose gift",
+  "viewYourGift":"View your gift",
+  "daysLeft" : "Days left",
+  "totalGifts" :"Total gifts",
+  "shareGifts": "Share gift registry details",
+  "share" : "Share"
 }

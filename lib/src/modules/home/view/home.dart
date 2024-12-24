@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_201_kartlab/src/common/utils/constants.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/common/widgets/product_card.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_201_kartlab/src/modules/home/view/create_registry.dart';
 import 'package:flutter_201_kartlab/src/modules/gifts/view/add_gifts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Home extends StatelessWidget {
   static const String routeName = 'home';
@@ -23,9 +23,9 @@ class Home extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(10.0),
           child: state.registryList.isEmpty
-              ? const Center(
+              ? Center(
                   child: Text(
-                    'Create new registry,\n Tap + New Event button on top right corner',
+                    AppLocalizations.of(context)!.createNewRegistry,
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -79,9 +79,9 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(
-            "KartLabs",
-            style: TextStyle(
+          title: Text(
+            AppLocalizations.of(context)!.kartlabs,
+            style: const TextStyle(
               fontSize: null,
             ),
           ),
@@ -103,9 +103,9 @@ class Home extends StatelessWidget {
                   }
                 });
               },
-              child: const Chip(
-                label: Text('New Event'),
-                avatar: Icon(Icons.add),
+              child: Chip(
+                label: Text(AppLocalizations.of(context)!.newEvent),
+                avatar: const Icon(Icons.add),
               ),
             ),
           ]),
@@ -135,12 +135,12 @@ class Home extends StatelessWidget {
             elevation: 10,
             type: BottomNavigationBarType.shifting,
             onTap: (value) => context.read<HomeBloc>().add(UpdateIndexEvent(value)),
-            items: const <BottomNavigationBarItem>[
+            items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
+                icon: const Icon(Icons.home),
+                label: AppLocalizations.of(context)!.home,
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 backgroundColor: Colors.black87,
                 icon: Icon(Icons.list),
                 label: Constants.registry,
@@ -220,7 +220,9 @@ class RegistryWidget extends StatelessWidget {
                                 );
                           },
                           child: Chip(
-                            label: Text(data.yourGift == null ? 'Choose gift' : "View your gift"),
+                            label: Text(data.yourGift == null
+                                ? AppLocalizations.of(context)!.chooseGift
+                                : AppLocalizations.of(context)!.viewYourGift),
                             avatar: const Icon(Icons.card_giftcard),
                           ),
                         ),
@@ -259,8 +261,8 @@ class RegistryWidget extends StatelessWidget {
                         data.eventDate.difference(DateTime.now()).inDays.toString(),
                         style: const TextStyle(fontSize: 20),
                       ),
-                      const Text(
-                        "Days left",
+                      Text(
+                        AppLocalizations.of(context)!.daysLeft,
                       ),
                     ],
                   ),
@@ -271,8 +273,8 @@ class RegistryWidget extends StatelessWidget {
                         "${data.gifts.length}",
                         style: const TextStyle(fontSize: 20),
                       ),
-                      const Text(
-                        "Total gifts",
+                      Text(
+                        AppLocalizations.of(context)!.totalGifts,
                       ),
                     ],
                   ),
@@ -282,19 +284,19 @@ class RegistryWidget extends StatelessWidget {
                         final box = context.findRenderObject() as RenderBox?;
                         await Share.share(
                           jsonEncode(data.toJson()),
-                          subject: "Share gift registry details",
+                          subject: AppLocalizations.of(context)!.shareGifts,
                           sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                         );
                       },
-                      child: const Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.share,
                             size: 30,
                           ),
                           Text(
-                            "Share",
+                            AppLocalizations.of(context)!.share,
                           ),
                         ],
                       ),
@@ -303,9 +305,9 @@ class RegistryWidget extends StatelessWidget {
                       onTap: () {
                         context.read<HomeBloc>().add(DeleteRegistry(data));
                       },
-                      child: const Chip(
-                        label: Text("Delete"),
-                        avatar: Icon(
+                      child: Chip(
+                        label: Text(AppLocalizations.of(context)!.delete),
+                        avatar: const Icon(
                           Icons.delete,
                           color: Colors.red,
                         ),

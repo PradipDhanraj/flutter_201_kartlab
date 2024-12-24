@@ -2,6 +2,8 @@ part of 'gifts_bloc.dart';
 
 sealed class GiftsEvent {}
 
+class OfflineEvent extends GiftsEvent {}
+
 class FetchCategories extends GiftsEvent {
   final EventModel? event;
   FetchCategories(this.event);

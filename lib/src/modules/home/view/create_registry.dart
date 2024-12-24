@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/modules/home/service/models/registry_model.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreateRegistry extends StatefulWidget {
   static const String routeName = "createRegistry";
-  CreateRegistry({super.key});
+  const CreateRegistry({super.key});
 
   @override
   State<CreateRegistry> createState() => _CreateRegistryState();
@@ -27,9 +27,9 @@ class _CreateRegistryState extends State<CreateRegistry> {
               AppNavigation.goBack();
             },
             child: const Icon(Icons.arrow_back_ios)),
-        title: const Text(
-          "Create Registry",
-          style: TextStyle(
+        title:  Text(
+          AppLocalizations.of(context)!.createRegistry,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
           ),
@@ -45,10 +45,10 @@ class _CreateRegistryState extends State<CreateRegistry> {
               // title
               TextFormField(
                 controller: _titleEditingController,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   fillColor: Colors.white,
                   focusColor: Colors.white,
-                  hintText: "Add title here...",
+                  hintText: AppLocalizations.of(context)!.addTitleHere,
                 ),
                 style: const TextStyle(
                   color: Colors.white,
@@ -111,10 +111,10 @@ class _CreateRegistryState extends State<CreateRegistry> {
               // desc
               TextFormField(
                 controller: _descEditingController,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   fillColor: Colors.white,
                   focusColor: Colors.white,
-                  hintText: "Add description here...",
+                  hintText: AppLocalizations.of(context)!.addDesc,
                 ),
                 validator: (value) {
                   // if (value == null || value.isEmpty) {
@@ -131,13 +131,13 @@ class _CreateRegistryState extends State<CreateRegistry> {
                 onPressed: () {
                   if (_date == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please enter Date')),
+                       SnackBar(content: Text(AppLocalizations.of(context)!.enterDate)),
                     );
                     return;
                   }
                   if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added new registry entry')),
+                       SnackBar(content: Text(AppLocalizations.of(context)!.addedNewRegistry)),
                     );
                     var event = EventModel(
                       id: DateTime.now().toString(),
@@ -148,7 +148,7 @@ class _CreateRegistryState extends State<CreateRegistry> {
                     AppNavigation.pop(event);
                   }
                 },
-                child: const Text("Submit"),
+                child:  Text(AppLocalizations.of(context)!.submit),
               ),
             ],
           ),

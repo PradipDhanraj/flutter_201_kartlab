@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/modules/home/service/models/product_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductCardWidget extends StatefulWidget {
   Products e;
@@ -66,7 +67,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     InkWell(
                       onTap: widget.addToWishlistFunc,
                       child: Chip(
-                        label: widget.e.isInMyWishList ? Text("Wished") : Text("Add to Wishlist"),
+                        label: widget.e.isInMyWishList
+                            ? Text(AppLocalizations.of(context)!.wished)
+                            : Text(AppLocalizations.of(context)!.addToWishList),
                         avatar: Icon(
                           widget.e.isInMyWishList ? Icons.favorite : Icons.favorite_border,
                           color: widget.e.isInMyWishList ? Colors.red : Colors.white,

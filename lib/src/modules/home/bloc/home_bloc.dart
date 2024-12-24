@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/services/product_service/product_service.dart';
 import 'package:flutter_201_kartlab/src/common/services/sharedPreferences/share_preferences_service.dart';
@@ -15,6 +15,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   late SharePreferenceService sharedService;
   HomeBloc() : super(HomeState(index: 0)) {
+    Connectivity().onConnectivityChanged.listen(_updateConnectionStatus);
     sharedService = locator.get<SharePreferenceService>();
     on<AddRegistryEvent>(_addRegistryData);
     on<InitDataEvent>(_initDataFunction);
@@ -22,6 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<UpdateIndexEvent>(_updateIndex);
     on<UpdateProducts>(_updateproducts);
     on<UpdateWishList>(_updateWishlist);
+    on<OfflineEvent>(_offlineEvent);
   }
 
   FutureOr<void> _addRegistryData(AddRegistryEvent event, Emitter<HomeState> emit) {
@@ -41,7 +43,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     var list = dataList.map((e) => eventModelFromJson(e)).toList();
     var categories = await locator.get<ProductService>().getCategories();
     emit(state.copyWith(registryList: list, categories: categories));
-    if (state.products.isEmpty) {
+    var status = await Connectivity().checkConnectivity();
+    if (state.products.isEmpty && status.last != ConnectivityResult.none) {
       add(UpdateProducts(state.categoryid));
     }
   }
@@ -90,5 +93,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
     await sharedService.setData(Constants.wishlist, wishList);
     emit(state.copyWith(products: state.products));
+  }
+
+  void _updateConnectionStatus(List<ConnectivityResult> event) {
+    if (event.last == ConnectivityResult.none) {
+      add(OfflineEvent());
+      ScaffoldMessenger.of(AppNavigation.navigatorKey.currentContext!).showSnackBar(
+        const SnackBar(content: Text('Please connect internet to load products')),
+      );
+    } else {
+      add(InitDataEvent());
+    }
+  }
+
+  FutureOr<void> _offlineEvent(OfflineEvent event, Emitter<HomeState> emit) {
+    emit(state.copyWith(products: []));
   }
 }

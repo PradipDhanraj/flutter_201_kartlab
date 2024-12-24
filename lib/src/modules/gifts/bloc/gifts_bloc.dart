@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_201_kartlab/src/common/services/sharedPreferences/share_preferences_service.dart';
 import 'package:flutter_201_kartlab/src/common/utils/constants.dart';
@@ -15,10 +16,12 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
   late SharePreferenceService sharedService;
   Function? refreshHomeRegistryList;
   GiftsBloc(this.refreshHomeRegistryList) : super(GiftsState()) {
+    Connectivity().onConnectivityChanged.listen(_updateConnectionStatus);
     sharedService = locator.get<SharePreferenceService>();
     on<FetchCategories>(_fetctCatgories);
     on<FetchCategoryProducts>(_fetchCategoriesProducts);
     on<AddGiftToRegistry>(_addGiftToRegistry);
+    on<OfflineEvent>(_offlineEvent);
   }
 
   FutureOr<void> _fetctCatgories(FetchCategories event, Emitter<GiftsState> emit) async {
@@ -38,6 +41,10 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
     if (state.event == null) {
       var wishList = await sharedService.getData(Constants.wishlist);
       products.removeWhere((element) => !wishList.contains(element.productName));
+    }
+    var status = await Connectivity().checkConnectivity();
+    if (status.last == ConnectivityResult.none) {
+      products.clear();
     }
     emit(state.copyWith(
       products: products,
@@ -67,5 +74,20 @@ class GiftsBloc extends Bloc<GiftsEvent, GiftsState> {
     ));
     refreshHomeRegistryList?.call();
     AppNavigation.goBack();
+  }
+
+  void _updateConnectionStatus(List<ConnectivityResult> event) {
+    if (event.last == ConnectivityResult.none) {
+      add(OfflineEvent());
+      ScaffoldMessenger.of(AppNavigation.navigatorKey.currentContext!).showSnackBar(
+        const SnackBar(content: Text('Please connect internet to load products')),
+      );
+    } else {
+      add(FetchCategoryProducts("0", state.event));
+    }
+  }
+
+  FutureOr<void> _offlineEvent(OfflineEvent event, Emitter<GiftsState> emit) {
+    emit(state.copyWith(products: []));
   }
 }

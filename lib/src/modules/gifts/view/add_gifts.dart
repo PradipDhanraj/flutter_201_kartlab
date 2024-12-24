@@ -3,6 +3,7 @@ import 'package:flutter_201_kartlab/src/common/utils/navigation.dart';
 import 'package:flutter_201_kartlab/src/common/widgets/product_card.dart';
 import 'package:flutter_201_kartlab/src/modules/gifts/bloc/gifts_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddGiftsPage extends StatelessWidget {
   static const String routeName = "registry_details";
@@ -16,7 +17,7 @@ class AddGiftsPage extends StatelessWidget {
             listener: (context, state) {},
             builder: (context, state) {
               return Text(
-                state.event != null ? "Gift Categories" : "Wish List",
+                state.event != null ? AppLocalizations.of(context)!.giftCategories : AppLocalizations.of(context)!.wishlistTitle,
                 style: const TextStyle(
                   fontSize: null,
                 ),
@@ -68,10 +69,10 @@ class AddGiftsPage extends StatelessWidget {
                   ),
                 ),
                 if (state.products.isEmpty)
-                  const SizedBox(
+                  SizedBox(
                     height: 200,
                     child: Center(
-                      child: Text("Add products in your wishlist from home page."),
+                      child: Text(AppLocalizations.of(context)!.addProductToWishlist),
                     ),
                   ),
                 if (state.products.isNotEmpty)

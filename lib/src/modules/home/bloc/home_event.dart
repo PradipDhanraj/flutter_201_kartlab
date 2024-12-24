@@ -9,6 +9,8 @@ class AddRegistryEvent extends HomeEvent {
 
 class InitDataEvent extends HomeEvent {}
 
+class OfflineEvent extends HomeEvent {}
+
 class DeleteRegistry extends HomeEvent {
   final EventModel eventModel;
   DeleteRegistry(this.eventModel);
