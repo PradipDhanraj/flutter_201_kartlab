@@ -27,7 +27,7 @@ class _CreateRegistryState extends State<CreateRegistry> {
               AppNavigation.goBack();
             },
             child: const Icon(Icons.arrow_back_ios)),
-        title:  Text(
+        title: Text(
           AppLocalizations.of(context)!.createRegistry,
           style: const TextStyle(
             color: Colors.white,
@@ -45,7 +45,7 @@ class _CreateRegistryState extends State<CreateRegistry> {
               // title
               TextFormField(
                 controller: _titleEditingController,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   fillColor: Colors.white,
                   focusColor: Colors.white,
                   hintText: AppLocalizations.of(context)!.addTitleHere,
@@ -87,7 +87,7 @@ class _CreateRegistryState extends State<CreateRegistry> {
                         context,
                         dateFormat: 'dd MMMM yyyy',
                         initialDateTime: DateTime.now(),
-                        minDateTime: DateTime(DateTime.now().year),
+                        minDateTime: DateTime.now(),
                         maxDateTime: DateTime(3000),
                         onMonthChangeStartWithFirstDate: true,
                         onConfirm: (dateTime, List<int> index) {
@@ -111,7 +111,7 @@ class _CreateRegistryState extends State<CreateRegistry> {
               // desc
               TextFormField(
                 controller: _descEditingController,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   fillColor: Colors.white,
                   focusColor: Colors.white,
                   hintText: AppLocalizations.of(context)!.addDesc,
@@ -131,13 +131,13 @@ class _CreateRegistryState extends State<CreateRegistry> {
                 onPressed: () {
                   if (_date == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                       SnackBar(content: Text(AppLocalizations.of(context)!.enterDate)),
+                      SnackBar(content: Text(AppLocalizations.of(context)!.enterDate)),
                     );
                     return;
                   }
                   if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                       SnackBar(content: Text(AppLocalizations.of(context)!.addedNewRegistry)),
+                      SnackBar(content: Text(AppLocalizations.of(context)!.addedNewRegistry)),
                     );
                     var event = EventModel(
                       id: DateTime.now().toString(),
@@ -148,7 +148,7 @@ class _CreateRegistryState extends State<CreateRegistry> {
                     AppNavigation.pop(event);
                   }
                 },
-                child:  Text(AppLocalizations.of(context)!.submit),
+                child: Text(AppLocalizations.of(context)!.submit),
               ),
             ],
           ),
