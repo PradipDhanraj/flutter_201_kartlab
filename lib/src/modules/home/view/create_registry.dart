@@ -63,21 +63,6 @@ class _CreateRegistryState extends State<CreateRegistry> {
               const SizedBox(
                 height: 20,
               ),
-              // date
-              // TextFormField(
-              //   keyboardType: TextInputType.datetime,
-              //   decoration: const InputDecoration(
-              //     fillColor: Colors.white,
-              //     focusColor: Colors.white,
-              //     hintText: "Add title here...",
-              //   ),
-              //   validator: (value) {
-              //     if (value == null || value.isEmpty) {
-              //       return 'Please enter some text';
-              //     }
-              //     return null;
-              //   },
-              // ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -86,7 +71,7 @@ class _CreateRegistryState extends State<CreateRegistry> {
                       DatePicker.showDatePicker(
                         context,
                         dateFormat: 'dd MMMM yyyy',
-                        initialDateTime: DateTime.now(),
+                        initialDateTime: _date == null ? DateTime.now() : _date,
                         minDateTime: DateTime.now(),
                         maxDateTime: DateTime(3000),
                         onMonthChangeStartWithFirstDate: true,
@@ -98,9 +83,15 @@ class _CreateRegistryState extends State<CreateRegistry> {
                         },
                       );
                     },
-                    child: Icon(
-                      Icons.calendar_month,
-                      color: _date != null ? Colors.green : null,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        if (_date != null) Text("${_date!.day}/${_date!.month}/${_date!.year}"),
+                        Icon(
+                          Icons.calendar_month,
+                          color: _date != null ? Colors.green : null,
+                        ),
+                      ],
                     ),
                   ),
                 ],
